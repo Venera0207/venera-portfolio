@@ -127,7 +127,7 @@ img {
 
 .display-title {
   margin: 0;
-  font-size: clamp(42px, 6.2vw, 92px);
+  font-size: clamp(30px, 4.34vw, 64px);
   line-height: .98;
   letter-spacing: -.055em;
   font-weight: 600;
@@ -341,7 +341,7 @@ img {
 .hero-title {
   max-width: 850px;
   margin: 0;
-  font-size: clamp(64px, 11vw, 168px);
+  font-size: clamp(32px, 5.4vw, 83px);
   line-height: .82;
   letter-spacing: -.075em;
   font-weight: 600;
@@ -588,9 +588,10 @@ img {
 
 .projects-cta {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0;
   margin-top: 76px;
   padding-top: 26px;
   border-top: 1px solid var(--color-border);
@@ -599,6 +600,15 @@ img {
 .projects-cta p {
   margin: 0;
   color: var(--color-text-secondary);
+  font-size: clamp(18px, 1.75vw, 26px);
+  line-height: 1.15;
+  letter-spacing: -.03em;
+}
+
+.projects-cta .text-link {
+  margin-top: 2.4em;
+  font-size: clamp(18px, 1.65vw, 25px);
+  white-space: nowrap;
 }
 
 .services {
@@ -676,7 +686,7 @@ img {
 
 .contact-title {
   margin: 0;
-  font-size: clamp(64px, 9vw, 132px);
+  font-size: clamp(45px, 6.3vw, 92px);
   line-height: .86;
   letter-spacing: -.07em;
   font-weight: 600;
@@ -973,7 +983,7 @@ img {
   }
 
   .hero-title {
-    font-size: clamp(54px, 17vw, 86px);
+    font-size: clamp(27px, 8.3vw, 42px);
   }
 
   .hero-lead {
@@ -995,7 +1005,7 @@ img {
   }
 
   .display-title {
-    font-size: clamp(44px, 14vw, 68px);
+    font-size: clamp(31px, 9.8vw, 48px);
   }
 
   .projects-grid {
@@ -1018,7 +1028,14 @@ img {
 
   .projects-cta .text-link {
     display: inline-block;
-    margin-top: 18px;
+    margin-top: 2.4em;
+    font-size: 18px;
+    white-space: normal;
+  }
+
+  .projects-cta p {
+    font-size: 18px;
+    line-height: 1.35;
   }
 
   .service-item {
@@ -1036,7 +1053,7 @@ img {
   }
 
   .contact-title {
-    font-size: clamp(58px, 18vw, 88px);
+    font-size: clamp(41px, 12.6vw, 62px);
   }
 
   .contact-form {
@@ -1083,5 +1100,92 @@ img {
 
   .marquee-track {
     animation: none;
+  }
+}
+
+.project-visit {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .45rem .65rem;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  background: rgba(8,9,13,.62);
+  color: #F5F7FA;
+  font-size: .72rem;
+  letter-spacing: .02em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform .3s ease, background .3s ease, border-color .3s ease;
+}
+.project-card:hover .project-visit {
+  transform: translateY(-2px);
+  background: rgba(139,92,246,.82);
+  border-color: rgba(255,255,255,.35);
+}
+.contact-email { display:block; margin-top:1.5rem; color:var(--text); text-decoration:underline; text-underline-offset:.25em; }
+.contact-phone-note { margin:.55rem 0 0; color:var(--muted); font-size:.85rem; }
+@media (max-width: 700px) { .project-visit { font-size:.68rem; left:.7rem; bottom:.7rem; } }
+
+/* Final CTA typography adjustment */
+.cta-strip .cta-copy {
+  font-size: 2em !important;
+}
+
+.cta-strip .cta-link {
+  font-size: 2em !important;
+}
+
+@media (max-width: 700px) {
+  .cta-strip .cta-copy {
+    font-size: 2em !important;
+  }
+  .cta-strip .cta-link {
+    font-size: 2em !important;
+  }
+}
+
+/* Final explicit CTA sizes — positions intentionally unchanged */
+.cta-strip .cta-copy {
+  font-size: 2.4rem !important;
+  line-height: 1.3 !important;
+}
+
+.cta-strip .cta-link {
+  font-size: 2.4rem !important;
+  line-height: 1.2 !important;
+}
+
+@media (max-width: 700px) {
+  .cta-strip .cta-copy {
+    font-size: 1.8rem !important;
+  }
+
+  .cta-strip .cta-link {
+    font-size: 1.8rem !important;
+  }
+}
+
+/* Correct final size for the actual projects CTA elements. */
+.projects-cta > p {
+  font-size: 2.4rem !important;
+  line-height: 1.3 !important;
+}
+
+.projects-cta > .text-link {
+  font-size: 2.4rem !important;
+  line-height: 1.2 !important;
+}
+
+@media (max-width: 700px) {
+  .projects-cta > p {
+    font-size: 1.8rem !important;
+  }
+  .projects-cta > .text-link {
+    font-size: 1.8rem !important;
   }
 }

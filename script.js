@@ -1,4 +1,3 @@
-// Portfolio assets: photos/sweetmoment.jpg, photos/teplye-petelki.jpg, photos/auto-service.jpg, photos/coffee-mood.jpg, photos/beauty-lavande.jpg, photos/law-landing.jpg, photos/cleaning-site.jpg; hero: hero-video.mp4
 (() => {
   "use strict";
 
