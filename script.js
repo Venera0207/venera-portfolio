@@ -255,18 +255,25 @@
         return;
       }
 
+      const recipient = "venera.web.4@gmail.com";
+      const subject = `Заявка с сайта — ${name.value.trim()}`;
+      const body = [
+        `Имя: ${name.value.trim()}`,
+        `Контакт: ${contact.value.trim()}`,
+        "",
+        "Коротко о проекте:",
+        message.value.trim()
+      ].join("\n");
+
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
       if (successMessage) {
         successMessage.hidden = false;
-        successMessage.scrollIntoView({
-          behavior: prefersReducedMotion.matches ? "auto" : "smooth",
-          block: "nearest"
-        });
+        successMessage.textContent = "Открываем форму письма в Gmail…";
       }
 
       form.reset();
-
-      // TODO:
-      // Подключить реальный backend/endpoint, когда он появится.
+      window.open(gmailUrl, "_blank", "noopener,noreferrer");
     });
   }
 
