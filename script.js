@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   "use strict";
 
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -255,25 +255,43 @@
         return;
       }
 
-      const recipient = "venera.web.4@gmail.com";
-      const subject = `Заявка с сайта — ${name.value.trim()}`;
-      const body = [
-        `Имя: ${name.value.trim()}`,
-        `Контакт: ${contact.value.trim()}`,
-        "",
-        "Коротко о проекте:",
-        message.value.trim()
-      ].join("\n");
-
-      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const payload = {
+        name: name.value.trim(),
+        contact: contact.value.trim(),
+        message: message.value.trim(),
+        source: "portfolio-form"
+      };
 
       if (successMessage) {
         successMessage.hidden = false;
-        successMessage.textContent = "Открываем форму письма в Gmail…";
+        successMessage.textContent = "Отправляем заявку…";
       }
 
-      form.reset();
-      window.open(gmailUrl, "_blank", "noopener,noreferrer");
+      if (typeof window.veneraSendLead === "function") {
+        window.veneraSendLead(payload, function () {
+          if (successMessage) {
+            successMessage.textContent = "✅ Заявка принята! Венера скоро свяжется с вами.";
+          }
+          form.reset();
+        }, function () {
+          if (successMessage) {
+            successMessage.textContent = "Автоматическая отправка не удалась. Напишите, пожалуйста, на venera.web.4@gmail.com или в Telegram — ссылка выше.";
+          }
+        });
+      } else {
+        const mailto = "mailto:venera.web.4@gmail.com?subject=" +
+          encodeURIComponent("Заявка с сайта — " + payload.name) +
+          "&body=" + encodeURIComponent(
+            "Имя: " + payload.name + "\n" +
+            "Контакт: " + payload.contact + "\n\n" +
+            "Коротко о проекте:\n" + payload.message
+          );
+        if (successMessage) {
+          successMessage.textContent = "Открываем почтовую программу…";
+        }
+        form.reset();
+        window.location.href = mailto;
+      }
     });
   }
 
