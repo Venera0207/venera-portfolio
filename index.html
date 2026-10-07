@@ -424,12 +424,86 @@
       </div>
     </section>
 
-    <section class="section contacts" id="contacts" aria-labelledby="contacts-title">
+        <section class="section" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <style>
+          .rev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin:22px 0}
+          .rev-card{background:#14141F;border:1px solid rgba(124,92,255,.3);border-radius:14px;padding:16px}
+          .rev-card .who{font-weight:700;font-size:14px;color:#fff}
+          .rev-card .role{font-size:11.5px;color:#8b8b9a;margin-bottom:8px}
+          .rev-card .stars{color:#FFD166;font-size:13px;margin-bottom:8px;letter-spacing:2px}
+          .rev-card p{font-size:13px;line-height:1.5;color:#d9d9e3}
+          .rev-empty{grid-column:1/-1;text-align:center;color:#8b8b9a;padding:26px;border:1px dashed rgba(124,92,255,.4);border-radius:14px;font-size:14px}
+          .rev-form-wrap{max-width:640px}
+          .rev-form-wrap h3{font-size:17px;margin-bottom:12px}
+          #rev-form .rev-row{display:flex;gap:10px;flex-wrap:wrap}
+          #rev-form input,#rev-form textarea{width:100%;background:#14141F;border:1px solid rgba(124,92,255,.35);border-radius:10px;color:#eee;padding:10px 12px;font-size:14px;font-family:inherit}
+          #rev-form textarea{min-height:90px;margin-top:10px;resize:vertical}
+          .rev-stars{font-size:22px;color:#3a3a4a;cursor:pointer;margin:10px 0;letter-spacing:4px;user-select:none}
+          .rev-stars .on{color:#FFD166}
+          .rev-send{margin-top:10px;background:linear-gradient(90deg,#22D3EE,#7C5CFF);border:none;color:#fff;border-radius:10px;padding:11px 22px;font-weight:700;cursor:pointer}
+          .rev-send:hover{filter:brightness(1.1)}
+          .rev-ok{margin-top:10px;color:#7CFC9A;font-size:13.5px}
+        </style>
+        <div class="section-head reveal">
+          <span class="section-number">05</span>
+          <span class="eyebrow">REVIEWS</span>
+        </div>
+        <div class="services-header">
+          <h2 id="reviews-title" class="display-title reveal">Отзывы</h2>
+          <p class="section-note reveal reveal-delay-1">
+            Что говорят клиенты о работе с Венерой. Раздел молодой, поэтому здесь пока тихо — станьте первым.
+          </p>
+        </div>
+        <div class="rev-grid" id="rev-grid"></div>
+        <div class="rev-form-wrap reveal">
+          <h3>Оставить отзыв</h3>
+          <form id="rev-form" novalidate>
+            <div class="rev-row">
+              <input id="rev-name" type="text" placeholder="Ваше имя" required>
+              <input id="rev-role" type="text" placeholder="Роль или компания (необязательно)">
+            </div>
+            <div class="rev-stars" id="rev-stars" title="Ваша оценка"></div>
+            <textarea id="rev-text" placeholder="Пара слов о том, как прошла работа" required></textarea>
+            <button type="submit" class="rev-send">Отправить</button>
+            <div class="rev-ok" id="rev-ok" hidden>Спасибо! Отзыв появится на сайте после модерации.</div>
+          </form>
+        </div>
+      </div>
+      <script>
+      (function(){
+        var PIPE='https://script.google.com/macros/s/AKfycbySBX4LcBbZm_PzSUvYIPXDqwRphZQgFWiEnhGteizA9RLnIcDmFZcjRZrZ8nfu_i6d/exec';
+        var cn=0;
+        function jp(url,h){var cb='__rcb'+(++cn),sc=document.createElement('script'),done=false;var t=setTimeout(function(){if(done)return;done=true;cl();h.fail&&h.fail();},15000);function cl(){clearTimeout(t);try{delete window[cb];}catch(e){}if(sc.parentNode)sc.parentNode.removeChild(sc);}window[cb]=function(d){if(done)return;done=true;cl();h.ok&&h.ok(d);};sc.src=url+(url.indexOf('?')<0?'?':'&')+'callback='+cb;sc.async=true;sc.onerror=function(){if(done)return;done=true;cl();h.fail&&h.fail();};document.body.appendChild(sc);}
+        function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+        var grid=document.getElementById('rev-grid');
+        function render(list){
+          if(!list||!list.length){grid.innerHTML='<div class="rev-empty">Отзывов пока нет — станьте первым! Заполните форму ниже: отзыв появится после того, как Венера его подтвердит.</div>';return;}
+          grid.innerHTML=list.map(function(r){var stars='';for(var i=0;i<(r.rating||5);i++)stars+='★';return '<div class="rev-card"><div class="who">'+esc(r.name)+'</div><div class="role">'+esc(r.role||'')+'</div><div class="stars">'+stars+'</div><p>'+esc(r.text)+'</p></div>';}).join('');
+        }
+        jp(PIPE+'?action=reviews',{ok:function(d){render(d&&d.list);},fail:function(){render([]);}});
+        var rating=5, starsEl=document.getElementById('rev-stars');
+        function paint(){starsEl.innerHTML='';for(var i=1;i<=5;i++){var s=document.createElement('span');s.textContent='★';if(i<=rating)s.className='on';s.setAttribute('data-v',i);starsEl.appendChild(s);}}
+        paint();
+        starsEl.addEventListener('click',function(e){var v=parseInt(e.target.getAttribute&&e.target.getAttribute('data-v'),10);if(v){rating=v;paint();}});
+        document.getElementById('rev-form').addEventListener('submit',function(e){
+          e.preventDefault();
+          var name=document.getElementById('rev-name').value.trim(), text=document.getElementById('rev-text').value.trim();
+          if(!name||!text)return;
+          var role=document.getElementById('rev-role').value.trim();
+          jp(PIPE+'?action=review&name='+encodeURIComponent(name)+'&role='+encodeURIComponent(role)+'&rating='+rating+'&text='+encodeURIComponent(text),{ok:function(d){if(d&&d.ok){document.getElementById('rev-ok').hidden=false;document.getElementById('rev-form').reset();rating=5;paint();}}});
+        });
+        window.__revTest={render:render};
+      })();
+      </script>
+    </section>
+
+<section class="section contacts" id="contacts" aria-labelledby="contacts-title">
       <div class="container">
         <div class="contact-layout">
           <div class="contact-copy">
             <div class="section-head reveal">
-              <span class="section-number">05</span>
+              <span class="section-number">06</span>
               <span class="eyebrow">LET'S TALK</span>
             </div>
             <h2 id="contacts-title" class="contact-title reveal">
