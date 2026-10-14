@@ -1,3 +1,4 @@
+
 :root {
   --color-bg: #08090D;
   --color-surface: #11131A;
@@ -1275,3 +1276,16 @@ img {
 .contact-email {
   cursor: pointer;
 }
+
+/* --- Уточнение про цены для бизнеса (добавлено 14.10.2026) --- */
+.corp-note{
+  margin-top:28px;padding:26px 28px;
+  border:1px solid var(--color-border);
+  border-left:4px solid var(--color-accent);
+  border-radius:16px;
+  background:linear-gradient(135deg, rgba(139,92,246,.09), rgba(34,211,238,.05));
+}
+.corp-note h3{font-size:clamp(18px,2.2vw,22px);margin:0 0 12px;color:var(--color-text)}
+.corp-note p{margin:0 0 10px;color:var(--color-text-secondary);font-size:15px;line-height:1.65}
+.corp-note p:last-child{margin-bottom:0}
+.corp-note-cta{color:var(--color-accent-secondary);font-weight:600}
