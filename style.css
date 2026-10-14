@@ -1289,3 +1289,107 @@ img {
 .corp-note p{margin:0 0 10px;color:var(--color-text-secondary);font-size:15px;line-height:1.65}
 .corp-note p:last-child{margin-bottom:0}
 .corp-note-cta{color:var(--color-accent-secondary);font-weight:600}
+
+/* ============================================================
+   NEON LAYER — визуальный стиль venera-bot (циан → фиолет → фуксия)
+   Добавлено 14.10.2026: портфолио светится как бот-сайт.
+   ============================================================ */
+:root {
+  --neon-gradient: linear-gradient(135deg, #22D3EE 0%, #8B5CF6 50%, #D946EF 100%);
+  --neon-cyan: #22D3EE;
+  --neon-violet: #8B5CF6;
+  --shadow-neon: 0 0 40px rgba(139, 92, 246, .25);
+}
+
+::selection { background: rgba(139, 92, 246, .45); color: #fff; }
+
+/* --- Логотип: градиентный вордмарк, как на бот-сайте --- */
+.brand-name {
+  display: inline-block;
+  background: var(--neon-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+.brand-mark {
+  background: var(--neon-gradient);
+  border-color: transparent;
+  color: #0B0B12;
+  font-weight: 800;
+  box-shadow: 0 0 14px rgba(34, 211, 238, .45);
+}
+@media (max-width: 640px) { .brand-name { display: none; } }
+
+/* --- Кнопки: неон вместо белых пилюль --- */
+.button {
+  background: var(--neon-gradient);
+  background-size: 150% 150%;
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(139, 92, 246, .35);
+}
+.button:hover {
+  background: var(--neon-gradient);
+  background-position: 100% 100%;
+  box-shadow: 0 8px 26px rgba(139, 92, 246, .5), 0 0 24px rgba(34, 211, 238, .28);
+}
+.button:active { box-shadow: 0 4px 14px rgba(139, 92, 246, .4); }
+.button:focus-visible { outline: 2px solid var(--neon-cyan); outline-offset: 3px; }
+
+/* --- Надписи-акценты: циановое свечение --- */
+.eyebrow, .section-number {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 12px rgba(34, 211, 238, .55);
+}
+.hero-eyebrow { color: rgba(233, 251, 255, .8); }
+.marquee-group i { text-shadow: 0 0 10px rgba(139, 92, 246, .8); }
+
+/* --- Заголовки: мягкий градиент белый → лаванда --- */
+.hero-title, .display-title {
+  background: linear-gradient(180deg, #FFFFFF 52%, #CBB8FF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* --- Карточки проектов: неоновая рамка и glow при наведении --- */
+.project-media {
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.project:hover .project-media,
+.project-media:hover {
+  border-color: rgba(139, 92, 246, .55);
+  box-shadow: var(--shadow-neon), 0 0 14px rgba(34, 211, 238, .18);
+}
+.project-visit { transition: color var(--transition), text-shadow var(--transition); }
+.project:hover .project-visit {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 12px rgba(34, 211, 238, .5);
+}
+
+/* --- Чипы навыков и формы --- */
+.about-tags span { transition: border-color var(--transition), color var(--transition), box-shadow var(--transition); }
+.about-tags span:hover {
+  border-color: rgba(34, 211, 238, .6);
+  color: #E9FBFF;
+  box-shadow: 0 0 14px rgba(34, 211, 238, .25);
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, .16), 0 0 18px rgba(34, 211, 238, .22);
+}
+
+/* --- Курсор-прожектор: двухцветный, заметнее --- */
+.cursor-spotlight {
+  background:
+    radial-gradient(circle 260px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 92, 246, .10), transparent 70%),
+    radial-gradient(circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(34, 211, 238, .07), transparent 70%);
+}
+
+/* плавный перелив градиента на кнопках */
+.button { transition: transform 160ms ease, box-shadow var(--transition), background-position 450ms ease; }
