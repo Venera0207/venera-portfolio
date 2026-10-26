@@ -388,7 +388,7 @@
     bubble.innerHTML = '<button class="x" aria-label="Закрыть">✕</button><span class="t"></span>';
     var btn = document.createElement('button');
     btn.className = 'va-btn'; btn.setAttribute('aria-label', 'Чат с ИИ-ассистентом');
-    btn.innerHTML = '<img class="va-robot" src="photos/robot.jpg?v=2" alt="" aria-hidden="true">';
+    btn.innerHTML = '<img class="va-robot" src="photos/robot.jpg?v=3" alt="" aria-hidden="true">';
     dock.appendChild(bubble);
     dock.appendChild(btn);
     var panel = document.createElement('div');
