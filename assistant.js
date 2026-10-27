@@ -12,7 +12,7 @@
 (function () {
   'use strict';
 
-  var PIPE_URL = 'https://script.google.com/macros/s/AKfycbySBX4LcBbZm_PzSUvYIPXDqwRphZQgFWiEnhGteizA9RLnIcDmFZcjRZrZ8nfu_i6d/exec';
+  var PIPE_URL = 'https://script.google.com/macros/s/AKfycby_Y2ZLub05_seN8tKUwENLPspOY8TTsR7MqsksAn61WbnoC2PDGiaewyLItiU2ecFnfA/exec'; /* труба продаж v1.5: диалоги целиком в Telegram */
 
   /* ------------------------------------------------------------
      ЛОКАЛЬНАЯ БАЗА ЗНАНИЙ: мгновенные ответы без сети.
@@ -296,10 +296,12 @@
       '&name=' + encodeURIComponent(payload.name || '') +
       '&contact=' + encodeURIComponent(payload.contact || '') +
       '&message=' + encodeURIComponent(payload.message || '') +
-      '&source=' + encodeURIComponent(payload.source || location.hostname);
+      '&source=' + encodeURIComponent(payload.source || location.hostname) +
+      '&src=' + encodeURIComponent('портфолио') +
+      '&s=' + encodeURIComponent(state.sid);
     jsonp(url, 25000, {
       ok: function (data) {
-        if (data && data.ok) { sendLog(payload.contact || '', payload.message || '', 'lead'); onOk && onOk(); }
+        if (data && data.ok) { onOk && onOk(); }
         else { onFail && onFail(); }
       },
       fail: function () { onFail && onFail(); },
@@ -317,6 +319,8 @@
   }
   function sendLog(client, bot, outcome) {
     jsonp(PIPE_URL + '?action=log' +
+      '&sid=' + encodeURIComponent(state.sid) +
+      '&site=' + encodeURIComponent('портфолио') +
       '&page=' + encodeURIComponent(location.pathname || '') +
       '&client=' + encodeURIComponent(String(client).slice(0, 300)) +
       '&bot=' + encodeURIComponent(String(bot).slice(0, 300)) +
@@ -355,7 +359,7 @@
       '.va-dock{position:fixed;right:22px;bottom:22px;z-index:9998;display:flex;flex-direction:column;align-items:flex-end}' +
       '.va-btn{width:76px;height:76px;padding:0;border:none;border-radius:50%;overflow:hidden;cursor:pointer;background:#DDEBFF;box-shadow:0 12px 32px rgba(34,211,238,.35),0 8px 20px rgba(0,0,0,.4);animation:vaFloat 4s ease-in-out infinite}' +
       '.va-btn:hover{filter:brightness(1.1)}' +
-      '.va-robot{width:100%;height:100%;object-fit:cover;object-position:50% 32%;display:block;animation:vaWave 5s ease-in-out infinite;transform-origin:50% 85%}' +
+      '.va-robot{width:100%;height:100%;object-fit:contain;object-position:50% 50%;padding:6px;box-sizing:border-box;display:block;animation:vaWave 5s ease-in-out infinite;transform-origin:50% 85%}' +
       '.va-btn:hover .va-robot{animation-duration:1.8s}' +
       '@keyframes vaFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}' +
       '@keyframes vaWave{0%,55%,100%{transform:rotate(0)}62%{transform:rotate(7deg)}70%{transform:rotate(-5deg)}78%{transform:rotate(6deg)}86%{transform:rotate(-3deg)}}' +
@@ -388,7 +392,7 @@
     bubble.innerHTML = '<button class="x" aria-label="Закрыть">✕</button><span class="t"></span>';
     var btn = document.createElement('button');
     btn.className = 'va-btn'; btn.setAttribute('aria-label', 'Чат с ИИ-ассистентом');
-    btn.innerHTML = '<img class="va-robot" src="photos/robot.jpg?v=3" alt="" aria-hidden="true">';
+    btn.innerHTML = '<img class="va-robot" src="photos/robot.png?v=4" alt="" aria-hidden="true">';
     dock.appendChild(bubble);
     dock.appendChild(btn);
     var panel = document.createElement('div');
@@ -502,7 +506,9 @@
         ? 'Проверяю ещё раз, это займёт полминуты. Спасибо, что ждёте.'
         : 'Нейросети нужно чуть больше времени — сложные вопросы она обдумывает до минуты. Подождём вместе? Если вам некогда — напишите «контакт», и я передам вопрос Венере лично.');
     }, retry ? 8000 : 12000);
-    jsonp(PIPE_URL + '?action=chat&msg=' + encodeURIComponent(text) + '&hist=' + encodeURIComponent(JSON.stringify(histSnap)), retry ? 30000 : 45000, {
+    jsonp(PIPE_URL + '?action=chat&msg=' + encodeURIComponent(text) + '&s=' + encodeURIComponent(state.sid) +
+          '&site=' + encodeURIComponent('портфолио') +
+          '&hist=' + encodeURIComponent(JSON.stringify(histSnap)), retry ? 30000 : 45000, {
       ok: function (data) {
         clearTimeout(warnTimer);
         U.typing(false);
@@ -511,7 +517,6 @@
           if (isPriceLike(text) && rep.indexOf(CORP_MARK) === -1) rep += CORP_TAIL;
           U.agent(rep);
           pushH('agent', rep);
-          sendLog(text, rep, 'ai');
           state.lastExchange = 'Клиент: ' + text + ' | Бот: ' + rep;
           if (/передам|передать/.test(rep)) {
             state.dialog = state.lastExchange;
@@ -544,7 +549,8 @@
   /* ------------------------------------------------------------
      ДВИЖОК ДИАЛОГА
      ------------------------------------------------------------ */
-  var state = { await: null, contact: '', lastQ: '', hookUsed: false, msgCount: 0, lastExchange: '', dialog: '', hist: [] };
+  var state = { await: null, contact: '', lastQ: '', hookUsed: false, msgCount: 0, lastExchange: '', dialog: '', hist: [],
+                  sid: 'pf' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8) };
 
   function routeFromUI(U) {
     var text = (U._input.value || '').trim();
